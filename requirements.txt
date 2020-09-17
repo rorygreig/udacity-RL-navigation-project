@@ -1,0 +1,6 @@
+unityagents
+matplotlib
+numpy>=1.11.0
+pandas
+scipy
+ipykernel
