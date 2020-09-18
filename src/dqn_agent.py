@@ -8,8 +8,6 @@ import torch
 import torch.nn.functional as F
 import torch.optim as optim
 
-buffer_size = int(1e5)  # replay buffer size
-batch_size = 64  # minibatch size
 gamma = 0.99  # discount factor
 tau = 1e-3  # for soft update of target parameters
 update_network_interval = 6  # how often to update the network
@@ -39,7 +37,10 @@ class Agent:
         self.optimizer = optim.Adam(self.qnetwork_local.parameters(), lr=learning_rate)
 
         # Replay memory
-        self.memory = ReplayBuffer(action_size, buffer_size, batch_size, seed)
+        self.batch_size = 64
+        self.buffer_size = int(1e5)
+
+        self.memory = ReplayBuffer(action_size, self.buffer_size, self.batch_size, seed)
         # Initialize time step (for updating every UPDATE_EVERY steps)
         self.t_step = 0
 
@@ -51,7 +52,7 @@ class Agent:
         self.t_step += 1
         if self.t_step % update_network_interval == 0:
             # If enough samples are available in memory, get random subset and learn
-            if len(self.memory) > batch_size:
+            if len(self.memory) > self.batch_size:
                 experiences = self.memory.sample()
                 self.learn(experiences, gamma)
 
@@ -122,7 +123,7 @@ class Agent:
 class ReplayBuffer:
     """Fixed-size buffer to store experience tuples."""
 
-    def __init__(self, action_size, buffer_size, batch_size, seed):
+    def __init__(self, action_size, seed,buffer_size, batch_size):
         """Initialize a ReplayBuffer object.
 
         Params

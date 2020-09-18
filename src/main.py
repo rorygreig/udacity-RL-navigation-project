@@ -13,7 +13,7 @@ def main():
     train = parsed_args.train
 
     env = UnityEnvironment(file_name="Banana.app")
-    dqn = DQN(env, solve_threshold=17.0)
+    dqn = DQN(env, solve_threshold=15.0)
 
     weights_filename = "final_weights.pth"
 
