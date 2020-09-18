@@ -72,9 +72,11 @@ class Agent:
             with torch.no_grad():
                 action_values = self.qnetwork_local(state)
             self.qnetwork_local.train()
+
             return np.argmax(action_values.cpu().data.numpy())
-        else:
-            return random.choice(np.arange(self.action_size))
+
+        # else return random action
+        return random.choice(np.arange(self.action_size))
 
     def learn(self, experiences, gamma):
         """Update value parameters using given batch of experience tuples.
