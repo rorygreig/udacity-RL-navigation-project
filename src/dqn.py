@@ -23,9 +23,9 @@ class DQN:
 
         self.action_size = brain.vector_action_space_size
 
-        self.agent = Agent(state_size=self.state_size, action_size=self.action_size, seed=0)
+        self.agent = Agent(state_size=self.state_size, action_size=self.action_size, seed=0, learning_rate=8e-4)
 
-    def train(self, n_episodes=1800, max_t=1000, eps_start=1.0, eps_end=0.01, eps_decay=0.995):
+    def train(self, n_episodes=1800, max_t=1000, eps_start=1.0, eps_end=0.01, eps_decay=0.997):
         """Deep Q-Learning.
 
         Params
@@ -88,6 +88,7 @@ class DQN:
         # load stored weights from training
         self.agent.qnetwork_local.load_state_dict(torch.load("weights/" + filename))
 
+        print("Running agent with trained weights")
         # run environment with trained agent
         env_info = self.env.reset(train_mode=False)[self.brain_name]  # reset the environment
         state = env_info.vector_observations[0]  # get the current state

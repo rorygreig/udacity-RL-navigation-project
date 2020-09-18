@@ -13,16 +13,16 @@ def main():
     train = parsed_args.train
 
     env = UnityEnvironment(file_name="Banana.app")
-    dqn = DQN(env)
+    dqn = DQN(env, solve_threshold=17.0)
 
-    final_weights_filename = "final_weights.pth"
+    weights_filename = "final_weights.pth"
 
     if train:
         scores = dqn.train()
-        dqn.store_weights(final_weights_filename)
+        dqn.store_weights(weights_filename)
         plot_scores(scores)
     else:
-        dqn.run_with_stored_weights(final_weights_filename)
+        dqn.run_with_stored_weights(weights_filename)
 
 
 def plot_scores(scores):
