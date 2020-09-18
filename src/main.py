@@ -1,44 +1,35 @@
+import argparse
 from unityagents import UnityEnvironment
 import numpy as np
+from src.dqn import DQN
+import matplotlib.pyplot as plt
 
-env = UnityEnvironment(file_name="Banana.app")
 
-# get the default brain
-brain_name = env.brain_names[0]
-brain = env.brains[brain_name]
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--train", help="Whether to train or load weights from file",
+                        action='store_const', const=True, default=False)
+    parsed_args = parser.parse_args()
+    train = parsed_args.gpu
 
-# reset the environment
-env_info = env.reset(train_mode=True)[brain_name]
+    env = UnityEnvironment(file_name="Banana.app")
+    dqn = DQN(env)
 
-# number of agents in the environment
-print('Number of agents:', len(env_info.agents))
+    if train:
+        scores = dqn.train()
+        plot_scores(scores)
+    else:
+        dqn.run_with_stored_weights()
 
-# number of actions
-action_size = brain.vector_action_space_size
-print('Number of actions:', action_size)
 
-# examine the state space
-state = env_info.vector_observations[0]
-print('States look like:', state)
-state_size = len(state)
-print('States have length:', state_size)
+def plot_scores(scores):
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    plt.plot(np.arange(len(scores)), scores)
+    plt.ylabel('Score')
+    plt.xlabel('Episode #')
+    plt.show()
 
-env_info = env.reset(train_mode=False)[brain_name]  # reset the environment
-state = env_info.vector_observations[0]  # get the current state
-score = 0  # initialize the score
-while True:
-    action = np.random.randint(action_size)  # select an action
-    env_info = env.step(action)[brain_name]  # send the action to the environment
-    next_state = env_info.vector_observations[0]  # get the next state
-    reward = env_info.rewards[0]  # get the reward
-    done = env_info.local_done[0]  # see if episode has finished
-    score += reward  # update the score
-    state = next_state  # roll over the state to next time step
-    if done:  # exit loop if episode finished
-        break
 
-print("Score: {}".format(score))
-
-# When finished, you can close the environment.
-
-env.close()
+if __name__ == "__main__":
+    main()
