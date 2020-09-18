@@ -37,6 +37,8 @@ class DQN:
             eps_decay (float): multiplicative factor (per episode) for decreasing epsilon
         """
 
+        print(f"Training DQN with {n_episodes} episodes")
+
         scores = []  # list containing scores from each episode
         scores_window = deque(maxlen=self.score_window_length)  # window of scores
         eps = eps_start
@@ -66,10 +68,10 @@ class DQN:
             print('\rEpisode {}\tAverage Score: {:.2f}'.format(i_episode, mean_recent_score), end="")
             if i_episode % self.score_window_length == 0:
                 print('\rEpisode {}\tAverage Score: {:.2f}'.format(i_episode, mean_recent_score))
+                self.store_weights(f"checkpoint_{i_episode}.pth")
             if np.mean(scores_window) >= self.solve_threshold:
                 print('\nEnvironment solved in {:d} episodes!\tAverage Score: {:.2f}'
                       .format(i_episode - self.score_window_length, mean_recent_score))
-                self.store_weights()
                 break
 
         self.env.close()
@@ -77,7 +79,7 @@ class DQN:
         return scores
 
     def store_weights(self, filename='checkpoint.pth'):
-        torch.save(self.agent.qnetwork_local.state_dict(), filename)
+        torch.save(self.agent.qnetwork_local.state_dict(), "weights/" + filename)
 
     def run_with_stored_weights(self):
         # load stored weights and run environment with trained agent

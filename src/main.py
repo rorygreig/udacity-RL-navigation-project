@@ -10,13 +10,14 @@ def main():
     parser.add_argument("--train", help="Whether to train or load weights from file",
                         action='store_const', const=True, default=False)
     parsed_args = parser.parse_args()
-    train = parsed_args.gpu
+    train = parsed_args.train
 
     env = UnityEnvironment(file_name="Banana.app")
     dqn = DQN(env)
 
     if train:
         scores = dqn.train()
+        dqn.store_weights("final_weights.pth")
         plot_scores(scores)
     else:
         dqn.run_with_stored_weights()
