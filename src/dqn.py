@@ -43,6 +43,8 @@ class DQN:
         scores_window = deque(maxlen=self.score_window_length)  # window of scores
         eps = eps_start
 
+        checkpoint_interval = 200
+
         for i_episode in range(1, n_episodes + 1):
             env_info = self.env.reset(train_mode=True)[self.brain_name]
             state = env_info.vector_observations[0]
@@ -66,7 +68,7 @@ class DQN:
 
             mean_recent_score = np.mean(scores_window)
             print('\rEpisode {}\tAverage Score: {:.2f}'.format(i_episode, mean_recent_score), end="")
-            if i_episode % self.score_window_length == 0:
+            if i_episode % checkpoint_interval == 0:
                 print('\rEpisode {}\tAverage Score: {:.2f}'.format(i_episode, mean_recent_score))
                 self.store_weights(f"checkpoint_{i_episode}.pth")
             if np.mean(scores_window) >= self.solve_threshold:
@@ -79,6 +81,7 @@ class DQN:
         return scores
 
     def store_weights(self, filename='checkpoint.pth'):
+        print("Storing weights")
         torch.save(self.agent.qnetwork_local.state_dict(), "weights/" + filename)
 
     def run_with_stored_weights(self):
