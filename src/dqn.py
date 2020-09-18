@@ -89,7 +89,6 @@ class DQN:
         self.agent.qnetwork_local.load_state_dict(torch.load("weights/" + filename))
 
         print("Running agent with trained weights")
-        # run environment with trained agent
         env_info = self.env.reset(train_mode=False)[self.brain_name]  # reset the environment
         state = env_info.vector_observations[0]  # get the current state
         score = 0  # initialize the score
