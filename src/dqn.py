@@ -84,6 +84,23 @@ class DQN:
         print("Storing weights")
         torch.save(self.agent.qnetwork_local.state_dict(), "weights/" + filename)
 
-    def run_with_stored_weights(self):
-        # load stored weights and run environment with trained agent
-        pass
+    def run_with_stored_weights(self, filename='"final_weights.pth"'):
+        # load stored weights from training
+        self.agent.qnetwork_local.load_state_dict(torch.load("weights/" + filename))
+
+        # run environment with trained agent
+        env_info = self.env.reset(train_mode=False)[self.brain_name]  # reset the environment
+        state = env_info.vector_observations[0]  # get the current state
+        score = 0  # initialize the score
+        while True:
+            action = self.agent.act(state)  # select greedy action
+            env_info = self.env.step(action)[self.brain_name]
+            next_state = env_info.vector_observations[0]
+            reward = env_info.rewards[0]
+            done = env_info.local_done[0]
+            score += reward
+            state = next_state
+            if done:
+                break
+
+        print("Score: {}".format(score))
