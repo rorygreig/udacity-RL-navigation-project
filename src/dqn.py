@@ -23,9 +23,9 @@ class DQN:
 
         self.action_size = brain.vector_action_space_size
 
-        self.agent = Agent(state_size=self.state_size, action_size=self.action_size, seed=0, learning_rate=1e-3)
+        self.agent = Agent(state_size=self.state_size, action_size=self.action_size, seed=0, learning_rate=8e-4)
 
-    def train(self, n_episodes=1800, max_t=1000, eps_start=1.0, eps_end=0.005, eps_decay=0.997):
+    def train(self, n_episodes=1800, max_t=1000, eps_start=1.0, eps_end=0.01, eps_decay=0.995):
         """Deep Q-Learning.
 
         Params
