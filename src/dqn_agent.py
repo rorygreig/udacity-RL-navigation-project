@@ -8,8 +8,6 @@ import torch
 import torch.nn.functional as F
 import torch.optim as optim
 
-gamma = 0.99  # discount factor
-tau = 1e-3  # for soft update of target parameters
 update_network_interval = 6  # how often to update the network
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -54,7 +52,7 @@ class Agent:
             # If enough samples are available in memory, get random subset and learn
             if len(self.memory) > self.batch_size:
                 experiences = self.memory.sample()
-                self.learn(experiences, gamma)
+                self.learn(experiences)
 
     def act(self, state, eps=0.):
         """Returns actions for given state as per current policy.
@@ -78,7 +76,7 @@ class Agent:
         # else return random action
         return random.choice(np.arange(self.action_size))
 
-    def learn(self, experiences, gamma):
+    def learn(self, experiences, gamma=0.99):
         """Update value parameters using given batch of experience tuples.
 
         Params
@@ -104,9 +102,9 @@ class Agent:
         self.optimizer.step()
 
         # ------------------- update target network ------------------- #
-        self.soft_update(self.qnetwork_local, self.qnetwork_target, tau)
+        self.soft_update(self.qnetwork_local, self.qnetwork_target)
 
-    def soft_update(self, local_model, target_model, tau):
+    def soft_update(self, local_model, target_model, tau=1e-3):
         """Soft update model parameters.
         θ_target = τ*θ_local + (1 - τ)*θ_target
 
