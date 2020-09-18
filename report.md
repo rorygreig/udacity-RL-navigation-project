@@ -17,7 +17,7 @@ greater than the `reward_threshold` of 15.0.
 The "Adam" algorithm was used for stochastic gradient descent, with a learning rate of 8e-4.
 
 #### Neural Net architecture
-For the Q network a neural net was used with 3 linear layers of size 48, 48 and 32 respectively, as well as an output layer. 
+For the Q network a neural net was used with 3 linear layers of size 48, 32 and 32 respectively, as well as an output layer. 
 
 
 #### Hyper-parameters
@@ -36,3 +36,8 @@ The target average score of 15.0 was reached in 900 episodes.
 ![reward by episode](img/reward.png "Reward")
 
 ![performance](img/banana_navigation.gif "Agent performance")
+
+
+### Ideas for future work
+- experiment with different neural net architectures, including CNNs
+- try different learning algorithms (eg. duelling DQNs)
