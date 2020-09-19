@@ -31,7 +31,7 @@ The following hyper-parameters were experimented with, and the values used are g
 
 
 ### Results
-The target average score of 15.0 was reached in 900 episodes.
+The target average score of 15.0 was reached in 480 episodes.
 
 ![reward by episode](img/reward.png "Reward")
 
