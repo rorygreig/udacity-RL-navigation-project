@@ -26,14 +26,13 @@ pip install -r requirements.txt
 The Banana Unity environment is already included in the repo, so no extra files need to be downloaded.
 
 #### Run
-Run the main script to train the agent or load saved weights
+Run the main script to load the saved neural network weights and have the trained agent act in the environment:
 ```
 python src/main.py
 ```
-or 
+**OR** pass the `--train` flag to run in training mode and use DQN to train the networks:
 ```
 python src/main.py --train
 ```
-Passing the `--train` flag runs in training mode, which will train new weights. Running without this flag will load 
-saved weights from a file and run the environment using the trained agent.
+
 
